@@ -50,8 +50,12 @@ def crawl_information_app(app_name:str) -> Dict:
         "highlights": [],
         "launched": "",
         "languages": "",
-        "categories": "",
-        "description": [],
+        "categories": [],
+        "description": {
+            "short": "",
+            "long": "",
+            "features": []
+        },
         "ratings": [],
         "comments": []
     }
@@ -71,27 +75,31 @@ def crawl_information_app(app_name:str) -> Dict:
             result["highlights"].append(result_set_data.text.strip())
     else:
         result["highlights"].append(web_data.text.strip())
-    web_data = soup.find_all('p')
+
+    web_data = soup.find_all('p', class_="tw-text-fg-tertiary tw-text-body-sm")
     result["launched"] = web_data[0].text.strip()
     result["languages"] = web_data[1].text.strip()
-    web_data = soup.find('span',class_="tw-text-fg-tertiary tw-text-body-sm").find('a')
-    result["categories"] = web_data.text.strip()
+
+    web_data = soup.find('span',class_="tw-text-fg-tertiary tw-text-body-sm").find_all('a')
+    for item in web_data:
+        result["categories"].append(item.text.strip())
+
     web_data = soup.find('h2',class_="tw-text-heading-4")
-    result["description"].append(web_data.text.strip())
+    result["description"]["short"] = web_data.text.strip()
     web_data = soup.find('p',class_="tw-hidden lg:tw-block tw-text-body-xl tw-text-fg-tertiary")
-    result["description"].append(web_data.text.strip())
+    result["description"]["long"] = web_data.text.strip()
     web_data = soup.find('div',class_="tw-flex tw-flex-col tw-gap-lg lg:tw-gap-xl").find('ul').find_all('span',class_="")
     if isinstance(web_data, bs4.element.ResultSet):
         for result_set_data in web_data:
-            result["description"].append(result_set_data.text.strip())
+            result["description"]["features"].append(result_set_data.text.strip())
     else:
         result["description"].append(web_data.text.strip())
     web_data = soup.find('div',class_="app-reviews-metrics").find_all('span')
+
     for result_set_data in web_data:
         result["ratings"].append(result_set_data.text.strip())
         
     result["comments"] = crawl_informaion_app_reviews(app_name)
-    
 
     return result
 
