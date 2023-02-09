@@ -8,6 +8,10 @@ def read_json(filename):
     with open(filename, 'r', encoding='utf-8') as infile:
         return json.load(infile)
 
+def write_json(filename, data):
+    with open(filename, 'w', encoding='utf-8') as outfile:
+        json.dump(data, outfile, indent=4)
+        
 def get_data_from_soup(web_data):
     text_results = []
     if isinstance(web_data, bs4.element.ResultSet):
