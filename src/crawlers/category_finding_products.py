@@ -5,9 +5,11 @@ import time
 import random
 from typing import List
 import logging
+from .decorators import time_log
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+@time_log
 def subcategory_drop_shipping(url):
     page = urllib.request.urlopen(url)
     soup = BeautifulSoup(page, 'html.parser')
@@ -25,10 +27,10 @@ def subcategory_drop_shipping(url):
     
     web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
     result_dict["home_page"]["recommend"] += get_data_from_soup(web_data)
-    print("Drop shipping", result_dict)
 
     return result_dict
 
+@time_log
 def subcategory_print_on_demand(base_url, top_k = 10):
     result_dict = {
         "popular": [],
@@ -39,7 +41,9 @@ def subcategory_print_on_demand(base_url, top_k = 10):
     for sort_mode in result_dict.keys():
         page_number = 1
         while True:
-            url = base_url + '?page={page_number}&sort_by={sort_mode}'
+            logging.info("Crawling page {} with sort mode {}".format(page_number, sort_mode))
+            url = base_url + f'?page={page_number}&sort_by={sort_mode}'
+
             page = urllib.request.urlopen(url)
             soup = BeautifulSoup(page, 'html.parser')
             
@@ -55,6 +59,7 @@ def subcategory_print_on_demand(base_url, top_k = 10):
 
     return result_dict
 
+@time_log
 def subcategory_buying_wholesale(base_url, top_k = 10):
     result_dict = {
         "popular": [],
@@ -65,7 +70,8 @@ def subcategory_buying_wholesale(base_url, top_k = 10):
     for sort_mode in result_dict.keys():
         page_number = 1
         while True:
-            url = base_url + '?page={page_number}&sort_by={sort_mode}'
+            logging.info("Crawling page {} with sort mode {}".format(page_number, sort_mode))
+            url = base_url + f'?page={page_number}&sort_by={sort_mode}'
             page = urllib.request.urlopen(url)
             soup = BeautifulSoup(page, 'html.parser')
             
@@ -81,6 +87,7 @@ def subcategory_buying_wholesale(base_url, top_k = 10):
 
     return result_dict
 
+@time_log
 def subcategory_finding_suppliers(base_url, top_k = 10):
     result_dict = {
         "popular": [],
@@ -91,14 +98,15 @@ def subcategory_finding_suppliers(base_url, top_k = 10):
     for sort_mode in result_dict.keys():
         page_number = 1
         while True:
-            url = base_url + '?page={page_number}&sort_by={sort_mode}'
+            logging.info("Crawling page {} with sort mode {}".format(page_number, sort_mode))
+            url = base_url + f'?page={page_number}&sort_by={sort_mode}'
             page = urllib.request.urlopen(url)
             soup = BeautifulSoup(page, 'html.parser')
             
             web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
             result_from_soup : List[str] = get_data_from_soup(web_data)
             result_dict[sort_mode] += result_from_soup
-                
+            
             if not len(web_data) or not len(result_from_soup):
                 break
             
@@ -107,6 +115,7 @@ def subcategory_finding_suppliers(base_url, top_k = 10):
 
     return result_dict
 
+@time_log
 def crawl_category_finding_products():
     link_dict = read_json("src/crawlers/configs/link_config.json")
 
