@@ -1,0 +1,17 @@
+{
+    "home_page": "https://apps.shopify.com/",
+    "categories": {
+        "finding-products": "https://apps.shopify.com/categories/finding-products",
+        "selling-products": "https://apps.shopify.com/categories/selling-products",
+        "orders-and-shipping": "https://apps.shopify.com/categories/orders-and-shipping",
+        "store-design": "https://apps.shopify.com/categories/store-design",
+        "marketing-and-conversion": "https://apps.shopify.com/categories/marketing-and-conversion",
+        "store-management": "https://apps.shopify.com/categories/store-management"
+    },
+    "subcategories":{
+        "drop-shipping": "https://apps.shopify.com/categories/finding-products-product-sourcing-dropshipping",
+        "print-on-demand-pod": "https://apps.shopify.com/categories/finding-products-product-sourcing-print-on-demand-pod",
+        "buying-wholesale": "https://apps.shopify.com/categories/finding-products-product-sourcing-buying-wholesale",
+        "finding-suppliers": "https://apps.shopify.com/categories/finding-products-product-sourcing-finding-suppliers"
+    }
+}

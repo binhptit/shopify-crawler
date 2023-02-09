@@ -4,12 +4,13 @@ import urllib.request
 import bs4
 import random
 import time
+import json
+from .utils import filter_string
 
 def crawl_informaion_app_reviews(app_name:str) -> Dict:
     page_number = 1
     comments = []
     while True:
-        
         time.sleep(random.randint(0,1))
         url_comments = f"https://apps.shopify.com/{app_name}/reviews?page={page_number}"
         page = urllib.request.urlopen(url_comments)
@@ -63,16 +64,17 @@ def crawl_information_app(app_name:str) -> Dict:
     web_data = soup.find('h1')
     result["app_name"] = web_data.text.strip()
     web_data = soup.find('span', class_='tw-text-body-sm tw-text-fg-secondary')
-    result["overall_rating"] = web_data.text.strip()
+    result["overall_rating"] = float(filter_string(web_data.text.strip(), '0123456789.'))
     web_data = soup.find('div',class_='tw-px-md xl:tw-px-lg tw-border-solid tw-border-x tw-border-stroke-primary').find('a')
-    result["reviews"] = web_data.text.strip()
+    result["reviews"] = int(web_data.text.strip())
     web_data = soup.find('div',class_='tw-pl-md xl:tw-pl-lg').find('a')
     result["developer"] = web_data.text.strip()
     web_data = soup.find('div','tw-col-span-full md:tw-col-span-4 lg:tw-col-span-3 tw-flex tw-flex-col tw-gap-xl').find('div',class_="").find_all('span')
 
     if isinstance(web_data, bs4.element.ResultSet):
         for result_set_data in web_data:
-            result["highlights"].append(result_set_data.text.strip())
+            if result_set_data.text.strip():
+                result["highlights"].append(result_set_data.text.strip())
     else:
         result["highlights"].append(web_data.text.strip())
 
@@ -94,25 +96,20 @@ def crawl_information_app(app_name:str) -> Dict:
             result["description"]["features"].append(result_set_data.text.strip())
     else:
         result["description"].append(web_data.text.strip())
-    web_data = soup.find('div',class_="app-reviews-metrics").find_all('span')
 
+    web_data = soup.find('div',class_="app-reviews-metrics").find_all('span')
     for result_set_data in web_data:
-        result["ratings"].append(result_set_data.text.strip())
-        
+        result_item = result_set_data.text.strip()
+        if "%" in result_item:
+            result["ratings"].append(result_set_data.text.strip())
+
     result["comments"] = crawl_informaion_app_reviews(app_name)
 
     return result
 
 if __name__ == '__main__':
-    url =  "messenger"
-    crawl_result = crawl_information_app(url)
-    print(crawl_result)
+    app_slug =  "walmart-marketplace"
+    crawl_result = crawl_information_app(app_slug)
 
-    # page_number = 1
-    # while True:
-    #     url = f"https://apps.shopify.com/walmart-marketplace/reviews?page={page_number}"
-
-    #     #crawl comments
-
-    #     #if crawl nothing -> stop 
-    #     page_number += 1/
+    with open(f'data/{app_slug}.json', 'w') as outfile:
+        json.dump(crawl_result, outfile, indent=4)
