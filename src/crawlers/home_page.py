@@ -1,9 +1,6 @@
 from typing import Dict
 from bs4 import BeautifulSoup
 import urllib.request
-import bs4
-import random
-import time
 import numpy as np
 
 def crawl_apps_in_home_page() -> Dict:
@@ -49,4 +46,4 @@ def crawl_apps_in_home_page() -> Dict:
         apps.append(block)
 
     return apps
-print(crawl_apps_in_home_page())
+
