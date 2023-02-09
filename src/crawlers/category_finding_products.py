@@ -1,9 +1,12 @@
 import urllib
 from bs4 import BeautifulSoup
-import bs4
-from .utils import read_json
+from .utils import read_json, get_data_from_soup
 import time
 import random
+from typing import List
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def subcategory_drop_shipping(url):
     page = urllib.request.urlopen(url)
@@ -18,22 +21,11 @@ def subcategory_drop_shipping(url):
     }
 
     web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    
-    if isinstance(web_data, bs4.element.ResultSet):
-        for result_set_data in web_data:
-            if result_set_data.text.strip():
-                result_dict["home_page"]["recommend"].append(result_set_data.text.strip())
-    else:
-        result_dict["home_page"]["recommend"].append(web_data.text.strip())
+    result_dict["home_page"]["recommend"] = get_data_from_soup(web_data)
     
     web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    
-    if isinstance(web_data, bs4.element.ResultSet):
-        for result_set_data in web_data:
-            if result_set_data.text.strip():
-                result_dict["home_page"]["recommend"].append(result_set_data.text.strip())
-    else:
-        result_dict["home_page"]["recommend"].append(web_data.text.strip())
+    result_dict["home_page"]["recommend"] += get_data_from_soup(web_data)
+    print("Drop shipping", result_dict)
 
     return result_dict
 
@@ -44,7 +36,7 @@ def subcategory_print_on_demand(base_url, top_k = 10):
         "newest": []
     }
 
-    for sort_mode in ["popular", "best_match", "newest"]:
+    for sort_mode in result_dict.keys():
         page_number = 1
         while True:
             url = base_url + '?page={page_number}&sort_by={sort_mode}'
@@ -52,15 +44,10 @@ def subcategory_print_on_demand(base_url, top_k = 10):
             soup = BeautifulSoup(page, 'html.parser')
             
             web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    
-            if isinstance(web_data, bs4.element.ResultSet):
-                for result_set_data in web_data:
-                    if result_set_data.text.strip():
-                        result_dict[sort_mode].append(result_set_data.text.strip())
-            else:
-                result_dict[sort_mode].append(web_data.text.strip())
+            result_from_soup : List[str] = get_data_from_soup(web_data)
+            result_dict[sort_mode] += result_from_soup
             
-            if not len(web_data) or len(result_dict[sort_mode]):
+            if not len(web_data) or not len(result_from_soup):
                 break
             
             time.sleep(random.randint(0, 2))
@@ -75,7 +62,7 @@ def subcategory_buying_wholesale(base_url, top_k = 10):
         "newest": []
     }
 
-    for sort_mode in ["popular", "best_match", "newest"]:
+    for sort_mode in result_dict.keys():
         page_number = 1
         while True:
             url = base_url + '?page={page_number}&sort_by={sort_mode}'
@@ -83,15 +70,10 @@ def subcategory_buying_wholesale(base_url, top_k = 10):
             soup = BeautifulSoup(page, 'html.parser')
             
             web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    
-            if isinstance(web_data, bs4.element.ResultSet):
-                for result_set_data in web_data:
-                    if result_set_data.text.strip():
-                        result_dict[sort_mode].append(result_set_data.text.strip())
-            else:
-                result_dict[sort_mode].append(web_data.text.strip())
+            result_from_soup : List[str] = get_data_from_soup(web_data)
+            result_dict[sort_mode] += result_from_soup
                 
-            if not len(web_data) or len(result_dict[sort_mode]):
+            if not len(web_data) or not len(result_from_soup):
                 break
             
             time.sleep(random.randint(0, 2))
@@ -106,7 +88,7 @@ def subcategory_finding_suppliers(base_url, top_k = 10):
         "newest": []
     }
 
-    for sort_mode in ["popular", "best_match", "newest"]:
+    for sort_mode in result_dict.keys():
         page_number = 1
         while True:
             url = base_url + '?page={page_number}&sort_by={sort_mode}'
@@ -114,15 +96,10 @@ def subcategory_finding_suppliers(base_url, top_k = 10):
             soup = BeautifulSoup(page, 'html.parser')
             
             web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    
-            if isinstance(web_data, bs4.element.ResultSet):
-                for result_set_data in web_data:
-                    if result_set_data.text.strip():
-                        result_dict[sort_mode].append(result_set_data.text.strip())
-            else:
-                result_dict[sort_mode].append(web_data.text.strip())
+            result_from_soup : List[str] = get_data_from_soup(web_data)
+            result_dict[sort_mode] += result_from_soup
                 
-            if not len(web_data) or len(result_dict[sort_mode]):
+            if not len(web_data) or not len(result_from_soup):
                 break
             
             time.sleep(random.randint(0, 2))
@@ -131,7 +108,7 @@ def subcategory_finding_suppliers(base_url, top_k = 10):
     return result_dict
 
 def crawl_category_finding_products():
-    link_dict = read_json("src/crawlers/link_config.json")
+    link_dict = read_json("src/crawlers/configs/link_config.json")
 
     page = urllib.request.urlopen(link_dict["categories"]["finding-products"])
     soup = BeautifulSoup(page, 'html.parser')
@@ -149,22 +126,11 @@ def crawl_category_finding_products():
     }
 
     web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    
-    if isinstance(web_data, bs4.element.ResultSet):
-        for result_set_data in web_data:
-            if result_set_data.text.strip():
-                result_dict["finding-products"]["recommend"].append(result_set_data.text.strip())
-    else:
-        result_dict["finding-products"]["recommend"].append(web_data.text.strip())
-
+    result_from_soup : List[str] = get_data_from_soup(web_data)
+    result_dict["finding-products"]["recommend"] += result_from_soup
     
     web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    
-    if isinstance(web_data, bs4.element.ResultSet):
-        for result_set_data in web_data:
-            if result_set_data.text.strip():
-                result_dict["finding-products"]["recommend"].append(result_set_data.text.strip())
-    else:
-        result_dict["finding-products"]["recommend"].append(web_data.text.strip())
-    
+    result_from_soup : List[str] = get_data_from_soup(web_data)
+    result_dict["finding-products"]["recommend"] += result_from_soup
+
     return result_dict

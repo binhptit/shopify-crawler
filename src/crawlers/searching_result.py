@@ -32,7 +32,7 @@ def crawl_searching_result(input_query) -> Dict:
     for mode_sort in ['popular', 'best_match', 'newest']:
         page = 1
         while True:
-            browser = webdriver.Chrome(executable_path="chromedriver")
+            browser = webdriver.Chrome(executable_path="./assets/chromedriver")
 
             browser.get(f"https://apps.shopify.com/search?q={preprocessed_input_query}&sort_by={mode_sort}&page={page}")
             html = browser.page_source
