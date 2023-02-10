@@ -12,6 +12,206 @@
         "drop-shipping": "https://apps.shopify.com/categories/finding-products-product-sourcing-dropshipping",
         "print-on-demand-pod": "https://apps.shopify.com/categories/finding-products-product-sourcing-print-on-demand-pod",
         "buying-wholesale": "https://apps.shopify.com/categories/finding-products-product-sourcing-buying-wholesale",
-        "finding-suppliers": "https://apps.shopify.com/categories/finding-products-product-sourcing-finding-suppliers"
+        "finding-suppliers": "https://apps.shopify.com/categories/finding-products-product-sourcing-finding-suppliers",
+        "social-proof": {
+            "url": "https://apps.shopify.com/categories/store-design-social-proof",
+            "tags": {
+                "product-reviews": "https://apps.shopify.com/categories/store-design-social-proof-product-reviews",
+                "trust-badges": "https://apps.shopify.com/categories/store-design-social-proof-trust-badges",
+                "visitor-counter": "https://apps.shopify.com/categories/store-design-social-proof-visitor-counter"
+            }
+        },
+        "internationalization": {
+            "url": "https://apps.shopify.com/categories/store-design-internationalization",
+            "tags": {
+                "currency": "https://apps.shopify.com/categories/store-design-internationalization-currency",
+                "language-and-translation": "https://apps.shopify.com/categories/store-design-internationalization-language-and-translation"
+            }
+        },
+        "store-pages": {
+            "url": "https://apps.shopify.com/categories/store-design-store-pages",
+            "tags": {
+                "page-builder": "https://apps.shopify.com/categories/store-design-store-pages-page-builder",
+                "pre-launch": "https://apps.shopify.com/categories/store-design-store-pages-pre-launch"
+            }
+        },
+        "store-alerts": {
+            "url": "https://apps.shopify.com/categories/store-design-store-alerts",
+            "tags": {}
+        },
+        "navigation-and-search": {
+            "url": "https://apps.shopify.com/categories/store-design-navigation-and-search",
+            "tags": {}
+        },
+        "notifications": {
+            "url": "https://apps.shopify.com/categories/store-design-notifications",
+            "tags": {}
+        },
+        "images-and-media": {
+            "url": "https://apps.shopify.com/categories/store-design-images-and-media",
+            "tags": {}
+        },
+        "page-enhancements": {
+            "url": "https://apps.shopify.com/categories/store-design-page-enhancements",
+            "tags": {}
+        },
+        "selling-methods": {
+            "url": "https://apps.shopify.com/categories/selling-products-selling-methods",
+            "tags": {
+                "online-marketplaces": "https://apps.shopify.com/categories/selling-products-selling-methods-online-marketplaces",
+                "social-media": "https://apps.shopify.com/categories/selling-products-selling-methods-social-media",
+                "mobile-app-builder": "https://apps.shopify.com/categories/selling-products-selling-methods-mobile-app-builder",
+                "retail": "https://apps.shopify.com/categories/selling-products-selling-methods-retail",
+                "live-shopping": "https://apps.shopify.com/categories/selling-products-selling-methods-live-shopping",
+                "custom-storefronts": "https://apps.shopify.com/categories/selling-products-selling-methods-custom-storefronts"
+            } 
+        },
+        "purchase-options": {
+            "url": "https://apps.shopify.com/categories/selling-products-purchase-options",
+            "tags": {}
+        },
+        "product-variants": {
+            "url": "https://apps.shopify.com/categories/selling-products-product-variants",
+            "tags": {}
+        },
+        "pricing": {
+            "url": "https://apps.shopify.com/categories/selling-products-pricing",
+            "tags": {}
+        },
+        "digital-products": {
+            "url": "https://apps.shopify.com/categories/selling-products-digital-products",
+            "tags": {}
+        },
+        "product-display": {
+            "url": "https://apps.shopify.com/categories/selling-products-product-display",
+            "tags": {}
+        },
+        "gifts": {
+            "url": "https://apps.shopify.com/categories/selling-products-gifts",
+            "tags": {}
+        },
+        "blockchain": {
+            "url": "https://apps.shopify.com/categories/selling-products-blockchain",
+            "tags": {}
+        },
+        "fulfilling-orders": {
+            "url": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders",
+            "tags": {
+                "shipping-labels": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-shipping-labels",
+                "shipping-rate-calculator": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-shipping-rate-calculator",
+                "packing-slips": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-packing-slips",
+                "sku-and-barcodes": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-sku-and-barcodes",
+                "warehouse-management": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-warehouse-management",
+                "outsourced-fulfillment": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-outsourced-fulfillment",
+                "order-scanner": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-order-scanner",
+                "packaging": "https://apps.shopify.com/categories/orders-and-shipping-fulfilling-orders-packaging"
+            }
+        },
+        "managing-orders": {
+            "url": "https://apps.shopify.com/categories/orders-and-shipping-managing-orders",
+            "tags": {}
+        },
+        "managing-inventory": {
+            "url": "https://apps.shopify.com/categories/orders-and-shipping-managing-inventory",
+            "tags": {}
+        },
+        "delivery-and-pickups": {
+            "url": "https://apps.shopify.com/categories/orders-and-shipping-delivery-and-pickups",
+            "tags": {}
+        },
+        "email-marketing": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-email-marketing",
+            "tags": {
+                "email-capture": "https://apps.shopify.com/categories/marketing-and-conversion-email-marketing-email-capture",
+                "campaign-management": "https://apps.shopify.com/categories/marketing-and-conversion-email-marketing-campaign-management"
+            }
+        },
+        "advertising": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-advertising",
+            "tags": {
+                "product-feeds": "https://apps.shopify.com/categories/marketing-and-conversion-advertising-product-feeds",
+                "social-media-ads": "https://apps.shopify.com/categories/marketing-and-conversion-advertising-social-media-ads",
+                "affiliate-programs": "https://apps.shopify.com/categories/marketing-and-conversion-advertising-affiliate-programs",
+                "retargeting-ads": "https://apps.shopify.com/categories/marketing-and-conversion-advertising-retargeting-ads"
+            }
+        },
+        "search-engine-optimization": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-search-engine-optimization",
+            "tags": {
+                "speed-optimization": "https://apps.shopify.com/categories/marketing-and-conversion-search-engine-optimization-speed-optimization",
+                "page-redirect": "https://apps.shopify.com/categories/marketing-and-conversion-search-engine-optimization-page-redirect",
+                "sitemap-builder": "https://apps.shopify.com/categories/marketing-and-conversion-search-engine-optimization-sitemap-builder"
+            }
+        },
+        "upselling-and-cross-selling": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-upselling-and-cross-selling",
+            "tags": {
+                "product-bundles": "https://apps.shopify.com/categories/marketing-and-conversion-upselling-and-cross-selling-product-bundles",
+                "recommended-products": "https://apps.shopify.com/categories/marketing-and-conversion-upselling-and-cross-selling-recommended-products",
+                "recently-viewed": "https://apps.shopify.com/categories/marketing-and-conversion-upselling-and-cross-selling-recently-viewed"
+            }
+        },
+        "promotions": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-promotions",
+            "tags": {
+                "discounts": "https://apps.shopify.com/categories/marketing-and-conversion-promotions-discounts",
+                "gift-with-purchase": "https://apps.shopify.com/categories/marketing-and-conversion-promotions-gift-with-purchase",
+                "buy-one-get-one-bogo": "https://apps.shopify.com/categories/marketing-and-conversion-promotions-buy-one-get-one-bogo",
+                "giveaways-and-contests": "https://apps.shopify.com/categories/marketing-and-conversion-promotions-giveaways-and-contests"
+            }
+        },
+        "direct-marketing": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-direct-marketing",
+            "tags": {}
+        },
+        "cart-modification": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-cart-modification",
+            "tags": {}
+        },
+        "cart-recovery": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-cart-recovery",
+            "tags": {}
+        },
+        "content-marketing": {
+            "url": "https://apps.shopify.com/categories/marketing-and-conversion-content-marketing",
+            "tags": {}
+        },
+        "support":{
+            "url": "https://apps.shopify.com/categories/store-management-support",
+            "tags": {
+                "chat": "https://apps.shopify.com/categories/store-management-support-chat",
+                "faq": "https://apps.shopify.com/categories/store-management-support-faq",
+                "contact-form": "https://apps.shopify.com/categories/store-management-support-contact-form",
+                "returns-and-exchanges": "https://apps.shopify.com/categories/store-management-support-returns-and-exchanges",
+                "customer-order-tracking": "https://apps.shopify.com/categories/store-management-support-customer-order-tracking",
+                "feedback-and-surveys": "https://apps.shopify.com/categories/store-management-support-feedback-and-surveys",
+                "phone-support": "https://apps.shopify.com/categories/store-management-support-phone-support",
+                "support-ticket-management": "https://apps.shopify.com/categories/store-management-support-support-ticket-management"
+            }
+        },
+        "analytics":{
+            "url": "https://apps.shopify.com/categories/store-management-analytics",
+            "tags": {}
+        },
+        "privacy-and-security": {
+            "url": "https://apps.shopify.com/categories/store-management-privacy-and-security",
+            "tags": {}
+        },
+        "customer-accounts": {
+            "url": "https://apps.shopify.com/categories/store-management-customer-accounts",
+            "tags": {}
+        },
+        "operations": {
+            "url": "https://apps.shopify.com/categories/store-management-operations",
+            "tags": {}
+        },
+        "store-data": {
+            "url": "https://apps.shopify.com/categories/store-management-store-data",
+            "tags": {}
+        },
+        "finances": {
+            "url": "https://apps.shopify.com/categories/store-management-finances",
+            "tags": {}
+        }
     }
 }

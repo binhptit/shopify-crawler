@@ -15,18 +15,16 @@ def subcategory_drop_shipping(url):
     soup = BeautifulSoup(page, 'html.parser')
 
     result_dict = {
-        "home_page":{
-            "recommend": [],
-        },
+        "recommend": [],
         "tags": {
         }
     }
 
     web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    result_dict["home_page"]["recommend"] = get_data_from_soup(web_data)
+    result_dict["recommend"] = get_data_from_soup(web_data)
     
     web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
-    result_dict["home_page"]["recommend"] += get_data_from_soup(web_data)
+    result_dict["recommend"] += get_data_from_soup(web_data)
 
     return result_dict
 

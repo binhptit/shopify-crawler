@@ -2,3 +2,8 @@ from .app_info import crawl_information_app, crawl_informaion_app_reviews
 from .home_page import crawl_apps_in_home_page
 from .searching_result import crawl_searching_result
 from .category_finding_products import crawl_category_finding_products
+from .category_store_design import crawl_category_store_design
+from .category_selling_products import crawl_category_selling_products
+from .category_orders_and_shipping import crawl_category_orders_and_shipping
+from .category_marketing_and_conversion import crawl_category_marketing_and_conversion
+from .category_store_management import crawl_category_store_management
