@@ -12,3 +12,4 @@ def time_log(func, *args, **kwargs):
         return result
     
     return wrapper
+    

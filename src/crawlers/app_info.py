@@ -5,16 +5,43 @@ import bs4
 import random
 import time
 import json
-from .utils import filter_string
+from .utils import filter_string, keep_number
+import requests
 
-def crawl_informaion_app_reviews(app_name:str) -> Dict:
+def crawl_informaion_app_reviews(app_name:str, proxy_pool, old_reviews) -> Dict:
     page_number = 1
     comments = []
+    proxy = proxy_pool.get_proxy()
+
+    number_of_comments = 0
+    match_old_reviews = False
+
     while True:
-        time.sleep(random.randint(0,1))
+        time.sleep(random.randint(2,4))
         url_comments = f"https://apps.shopify.com/{app_name}/reviews?page={page_number}"
-        page = urllib.request.urlopen(url_comments)
+
+        try:
+            with requests.Session() as session:
+                response = session.get(url_comments, proxies={'http': f"http://{proxy}"})
+                page = response.text        
+
+            if "Too many comments" in response.text:
+                raise Exception("Too many comments")
+            
+        except Exception as e:
+            time.sleep(5)
+
+            page = urllib.request.urlopen(url_comments)
+            print("Exception:", e)
+
         soup = BeautifulSoup(page, 'html.parser')
+        try:
+            web_data = soup.find('span', class_='tw-text-body-md tw-text-fg-tertiary')
+            if not number_of_comments:
+                number_of_comments = int(keep_number(web_data.text))
+        except Exception as e:
+            number_of_comments = 0
+
         web_data = soup.find_all('div',class_='tw-py-lg lg:tw-py-xl first:tw-pt-0 last:tw-pb-0')
         if not len(web_data):
             break
@@ -34,14 +61,46 @@ def crawl_informaion_app_reviews(app_name:str) -> Dict:
             comment_dict["content"] = data.text.strip()
             data = s.find('div',class_='tw-text-body-xs tw-text-fg-tertiary')
             comment_dict["date"] = data.text.strip()
-            
+
+            if comment_dict in old_reviews:
+                match_old_reviews = True
+                break
+
             comments.append(comment_dict)
+
+        if match_old_reviews:
+            break
+
+        if app_name == 'pagefly':
+            print(f"{app_name}. Comments: {len(comments)}.")
         page_number += 1
+
+    if not match_old_reviews and len(comments) < number_of_comments:
+        print(f"Missing comments: {number_of_comments - len(comments)}")
+    else:
+        print(f"Comments: {len(comments)}. Good!")
+        
     return comments
 
-def crawl_information_app(app_name:str) -> Dict:
+def crawl_information_app(app_name:str, proxy_pool) -> Dict:
     url = f"https://apps.shopify.com/{app_name}"
-    page = urllib.request.urlopen(url)
+
+    # page = urllib.request.urlopen(url)
+    proxy = proxy_pool.get_proxy()
+    try:
+        with requests.Session() as session:
+            response = session.get(url, proxies={'http': f"http://{proxy}"})
+            page = response.text        
+        proxy_pool.put_proxy(proxy)
+
+        if "Too Many" in str(page):
+            raise AttributeError("Too Many Requests")
+        
+    except Exception as e:
+        time.sleep(10)
+        page = urllib.request.urlopen(url)
+        print("Exception:", e)
+
     soup = BeautifulSoup(page, 'html.parser')
     result = {
         "app_name": "",
@@ -61,12 +120,21 @@ def crawl_information_app(app_name:str) -> Dict:
         "comments": []
     }
 
+    def save_html(html, file_name):
+        with open(file_name, 'w') as f:
+            f.write(html)
+    save_html(str(soup), "test.html")
+
     web_data = soup.find('h1')
     result["app_name"] = web_data.text.strip()
     web_data = soup.find('span', class_='tw-text-body-sm tw-text-fg-secondary')
     result["overall_rating"] = float(filter_string(web_data.text.strip(), '0123456789.'))
     web_data = soup.find('div',class_='tw-px-md xl:tw-px-lg tw-border-solid tw-border-x tw-border-stroke-primary').find('a')
-    result["reviews"] = int(web_data.text.strip())
+    try:
+        result["reviews"] = int(keep_number(web_data.text.strip()))
+    except Exception as e:
+        result["reviews"] = 0
+
     web_data = soup.find('div',class_='tw-pl-md xl:tw-pl-lg').find('a')
     result["developer"] = web_data.text.strip()
     web_data = soup.find('div','tw-col-span-full md:tw-col-span-4 lg:tw-col-span-3 tw-flex tw-flex-col tw-gap-xl').find('div',class_="").find_all('span')
@@ -103,13 +171,13 @@ def crawl_information_app(app_name:str) -> Dict:
         if "%" in result_item:
             result["ratings"].append(result_set_data.text.strip())
 
-    result["comments"] = crawl_informaion_app_reviews(app_name)
+    # result["comments"] = crawl_informaion_app_reviews(app_name)
 
     return result
 
-if __name__ == '__main__':
-    app_slug =  "walmart-marketplace"
-    crawl_result = crawl_information_app(app_slug)
+# if __name__ == '__main__':
+#     app_slug =  "walmart-marketplace"
+#     crawl_result = crawl_information_app(app_slug)
 
-    with open(f'data/{app_slug}.json', 'w') as outfile:
-        json.dump(crawl_result, outfile, indent=4)
+#     with open(f'data/{app_slug}.json', 'w') as outfile:
+#         json.dump(crawl_result, outfile, indent=4)
