@@ -88,7 +88,7 @@ def main():
             if os.path.exists(f'data/{present_day}/category_store_management.json'):
                 if not os.path.exists(f"data/{present_day}/applications.json"):
                     if not is_categories_running:
-                        redis_sv.delete('app_queue')
+                        # redis_sv.delete('app_queue')
 
                         slugs = []
                         for category in ALL_CATEGORIES:

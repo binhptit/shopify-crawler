@@ -127,7 +127,7 @@ def main():
             # Crawling homepage & category
             home_page_dict = crawl_apps_in_home_page()
             category_dict = main_categories(present_day)
-
+            save_json(f'data/{present_day}/home_page.json', home_page_dict)
             tracking_collection.insert_one({
                 "date": present_day,    
                 "category": category_dict,

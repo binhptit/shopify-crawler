@@ -107,5 +107,6 @@ def main():
                     redis_sv.lpush('app_queue', app_slug)
 
         time.sleep(300)
+        
 if __name__ == '__main__':
     main()

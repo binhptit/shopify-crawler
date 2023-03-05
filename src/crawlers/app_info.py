@@ -120,11 +120,6 @@ def crawl_information_app(app_name:str, proxy_pool) -> Dict:
         "comments": []
     }
 
-    def save_html(html, file_name):
-        with open(file_name, 'w') as f:
-            f.write(html)
-    save_html(str(soup), "test.html")
-
     web_data = soup.find('h1')
     result["app_name"] = web_data.text.strip()
     web_data = soup.find('span', class_='tw-text-body-sm tw-text-fg-secondary')
@@ -171,13 +166,4 @@ def crawl_information_app(app_name:str, proxy_pool) -> Dict:
         if "%" in result_item:
             result["ratings"].append(result_set_data.text.strip())
 
-    # result["comments"] = crawl_informaion_app_reviews(app_name)
-
     return result
-
-# if __name__ == '__main__':
-#     app_slug =  "walmart-marketplace"
-#     crawl_result = crawl_information_app(app_slug)
-
-#     with open(f'data/{app_slug}.json', 'w') as outfile:
-#         json.dump(crawl_result, outfile, indent=4)
