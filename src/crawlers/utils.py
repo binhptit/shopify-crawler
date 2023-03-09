@@ -34,24 +34,26 @@ def write_json(filename, data):
     with open(filename, 'w', encoding='utf-8') as outfile:
         json.dump(data, outfile, indent=4)
 
-def get_info_app_thumbnail(web_data):
+def get_info_app_thumbnail(thumbnail_data):
     info_app_dict = {}
 
+    web_data = thumbnail_data.find('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
     info_app_dict['app_name'] = str(web_data.text.strip())
     info_app_dict['slug'] = str(web_data.find('a').get('href')).split('?')[0].split('/')[-1]
-    
+    web_data = thumbnail_data.find('div', class_="tw-text-body-sm tw-text-fg-tertiary")
+    info_app_dict['short_desc'] = str(web_data.text.strip())
     return info_app_dict
 
 
 def get_data_from_soup(web_data):
     text_results = []
+
     if isinstance(web_data, bs4.element.ResultSet):
         for result_set_data in web_data:
             if result_set_data.text.strip():
                 text_results.append(get_info_app_thumbnail(result_set_data))
     else:
-        if web_data.text.strip():
-            text_results.append(get_info_app_thumbnail(web_data))
+        text_results.append(get_info_app_thumbnail(web_data))
     
     return text_results
 
@@ -80,7 +82,7 @@ def template_crawl_grid_apps(base_url, proxy_pool, top_k = 10000):
             page = get_request(url, proxy)
             soup = BeautifulSoup(page, 'html.parser')
             
-            web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+            web_data = soup.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
             result_from_soup : List[Dict] = get_data_from_soup(web_data)
             result_dict[sort_mode] += result_from_soup
 
@@ -105,10 +107,10 @@ def get_data(page, subcategory_name, proxy_pool):
         }
     }
 
-    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3")
     result_dict["recommend"] = get_data_from_soup(web_data)
     
-    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3")
     result_dict["recommend"] += get_data_from_soup(web_data)
 
     for tag in link_dict['subcategories'][subcategory_name]['tags'].keys():

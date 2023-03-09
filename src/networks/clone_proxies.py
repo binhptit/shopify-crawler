@@ -27,7 +27,7 @@ def crawl_proxies_1(retries = 3):
             break
         except Exception as e:
             retries -= 1
-            print(f"Retrying {retries} times!")
+            print(f"Retrying crawling https://free-proxy-list.net/ {retries} times!")
 
     if not retries:
         return {}
@@ -72,7 +72,7 @@ def crawl_proxies_2(retries = 3):
             break
         except Exception as e:
             retries -= 1
-            print(f"Retrying {retries} times!")
+            print(f"Retrying 'https://hidemy.name/en/proxy-list/ {retries} times!")
     
     if not retries:
         return {}

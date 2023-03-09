@@ -62,7 +62,7 @@ def extract_key_values(tree, key):
     if isinstance(tree, dict):
         for k, v in tree.items():
             if k == key:
-                yield v
+                yield {v: tree["short_desc"]}
             else:
                 yield from extract_key_values(v, key)
     elif isinstance(tree, list):

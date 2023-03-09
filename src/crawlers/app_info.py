@@ -4,7 +4,7 @@ import urllib.request
 import bs4
 import random
 import time
-import json
+import logging
 from .utils import filter_string, keep_number
 import requests
 
@@ -117,7 +117,8 @@ def crawl_information_app(app_name:str, proxy_pool) -> Dict:
             "features": []
         },
         "ratings": [],
-        "comments": []
+        "comments": [],
+        "image_urls": []
     }
 
     web_data = soup.find('h1')
@@ -165,5 +166,21 @@ def crawl_information_app(app_name:str, proxy_pool) -> Dict:
         result_item = result_set_data.text.strip()
         if "%" in result_item:
             result["ratings"].append(result_set_data.text.strip())
+
+    web_data = soup.find('div',class_="gallery-component__content").find_all('li')
+    for result_set_data in web_data:
+        try:
+            result["image_urls"].append(result_set_data.find('img')['src'])
+        except Exception as e:
+            # logging.info(e, "image_urls in application crawling")
+            continue
+    
+    web_data = soup.find_all('div',class_="gallery-component__item tw-aspect-[16/9] first:tw-ml-md last:tw-mr-md tw-snap-center tw-cursor-pointer tw-flex tw-justify-center tw-shadow-lg tw-mr-md tw-min-w-[80%] tw-bg-fg-primary tw-bg-clip-content tw-rounded-md")
+    for result_set_data in web_data:
+        try:
+            result["image_urls"].append(result_set_data.find('img')['src'])
+        except Exception as e:
+            # logging.info(e, "image_urls in application crawling")
+            continue
 
     return result

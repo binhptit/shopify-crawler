@@ -91,15 +91,15 @@ def main():
 
                 try:
                     if reviews_in_dtb is None:
+                        print(f"Not found in dtb. Start crawling {app_slug}...")
                         reviews_dict["reviews"] = crawl_informaion_app_reviews(app_slug, ProxyPool(), [])
-                        print(f"Length of reviews APP {app_slug}: {len(reviews_dict['reviews'])}")
                         comments_collection.insert_one(reviews_dict)
                     else:
                         old_reviews = reviews_in_dtb["reviews"][:min(len(reviews_in_dtb["reviews"]), 10)]
                         new_reviews = crawl_informaion_app_reviews(app_slug, ProxyPool(), old_reviews)
                         reviews_dict["reviews"] = old_reviews + new_reviews
 
-                        print(f"Length of reviews: {len(reviews_dict['reviews'])}")
+                        print(f"Found in dtb. Old reviews: {len(old_reviews)}, new reviews: {len(new_reviews)}")
 
                         comments_collection.update_one({"slug": app_slug}, {"$set": reviews_dict})
                 except Exception as e:

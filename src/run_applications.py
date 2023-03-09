@@ -83,18 +83,25 @@ def main():
     while True:
         logging.info("Waiting for homepage, category crawling..")
         present_day = str(datetime.datetime.now().strftime("%d%m%Y"))
-        is_categories_running = int(redis_sv.get('categories_running').decode('utf-8'))
+        try:
+            is_categories_running = int(redis_sv.get('categories_running').decode('utf-8'))
+        except:
+            is_categories_running = 1
+        
         if os.path.exists(f"data/{present_day}"):
             if os.path.exists(f'data/{present_day}/category_store_management.json'):
                 if not os.path.exists(f"data/{present_day}/applications.json"):
                     if not is_categories_running:
                         # redis_sv.delete('app_queue')
-
                         slugs = []
+                        slug_to_short_desc_dict = {}
                         for category in ALL_CATEGORIES:
                             with open(f'data/{present_day}/{category}.json') as f:
                                 category_dict = json.load(f)
-                                slugs.extend([slug_name for slug_name in extract_key_values(category_dict, 'slug') if not filter_uncasual_slug(slug_name)])
+                                for slug_dict in extract_key_values(category_dict, 'slug'):
+                                    slugs.extend([slug for slug in slug_dict.keys() if not filter_uncasual_slug(slug)])
+                                    slug_to_short_desc_dict.update(slug_dict)
+                                # slugs.extend([slug_dict for slug_dict in extract_key_values(category_dict, 'slug') if not filter_uncasual_slug(list(slug_dict.keys())[0])])
 
                         slugs = list(set(slugs))
                         print(f"Number of slugs: {len(slugs)}")
@@ -111,17 +118,18 @@ def main():
                                     continue
 
                                 proxy_pool = ProxyPool(id_part=random.randint(0,99), num_of_part=100)
-                                # logging.info("Crawling app: " + slug_app)
+                                logging.info("Crawling app: " + slug_app)
                                 app_dict = crawl_information_app(slug_app, proxy_pool)
                                 app_dict['slug'] = slug_app
                                 app_dict['last_updated'] = present_day
+                                app_dict['short_description'] = slug_to_short_desc_dict[slug_app]
 
                                 # Push finished app to redis
                                 redis_sv.lpush('app_queue', slug_app)
                                 if app_in_dtb is None:
                                     applications_collection.insert_one(app_dict)
                                 else:
-                                    applications_collection.find_one({"slug": slug_app}, {"$set": app_dict})
+                                    applications_collection.update_one({"slug": slug_app}, {"$set": app_dict})
                             except Exception as e:
                                 logging.info(f"{e} while crawling: {slug_app}")
                                 continue

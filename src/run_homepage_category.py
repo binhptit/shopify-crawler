@@ -1,16 +1,12 @@
 from crawlers import *
-import json
-import asyncio
-from motor.motor_asyncio import AsyncIOMotorClient
 from networks.proxy_management import ProxyPool
+import json
+from motor.motor_asyncio import AsyncIOMotorClient
 import unicodedata
-import multiprocessing
 from multiprocessing import Queue
 import logging
 from threading import Thread
 import time
-import random
-import copy
 import os
 import redis
 from datetime import datetime
@@ -102,6 +98,7 @@ def update_proxy():
     except Exception as e:
         logging.warn(f"Worker crawl_proxies_2 raised an exception: {e}. Retrying...")
         get_max = 300
+
     merged_dict.update(crawl_proxies_3(get_max=get_max))
 
     save_json("src/networks/assets/list_proxy.json", merged_dict)
@@ -117,8 +114,19 @@ def main():
         logging.info('Sleeping...')
         present_day = str(datetime.now().strftime("%d%m%Y"))
         if current_time.hour >= 1 and not os.path.exists(f'data/{present_day}'):
-            update_proxy()
-            logging.info("Finish updating proxy")
+
+            if redis_sv.exists('last_update_proxy'):            
+                last_update_proxy = redis_sv.get('last_update_proxy').decode('utf-8')
+            else:
+                last_update_proxy = ""
+
+            if last_update_proxy != present_day:
+                logging.info("Start updating proxy..")
+                update_proxy()
+                redis_sv.set('last_update_proxy', present_day)
+                logging.info("Finish updating proxy..")
+            else:
+                logging.info("Proxy is up-to-date")
 
             redis_sv.set('categories_running', 1)
             
@@ -135,8 +143,15 @@ def main():
                 }
             )
 
-            redis_sv.set('previous_homepage', redis_sv.get('current_homepage'))
-            redis_sv.set('previous_categories', redis_sv.get('current_categories'))
+            try:
+                redis_sv.set('previous_homepage', redis_sv.get('current_homepage'))
+            except Exception as e:
+                redis_sv.set('previous_homepage', json.dumps({}))
+            
+            try:
+                redis_sv.set('previous_categories', redis_sv.get('current_categories'))
+            except Exception as e:
+                redis_sv.set('previous_categories', json.dumps({}))
 
             redis_sv.set('current_homepage', json.dumps(home_page_dict))
             redis_sv.set('current_categories', json.dumps(category_dict))
