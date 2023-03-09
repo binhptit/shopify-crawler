@@ -20,10 +20,14 @@ def subcategory_drop_shipping(url):
         }
     }
 
-    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3")
+    web_data = web_data.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
+
     result_dict["recommend"] = get_data_from_soup(web_data)
     
-    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3")
+    web_data = web_data.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
+
     result_dict["recommend"] += get_data_from_soup(web_data)
 
     time.sleep(random.randint(1, 4))
@@ -47,7 +51,8 @@ def subcategory_print_on_demand(base_url):
             page = urllib.request.urlopen(url)
             soup = BeautifulSoup(page, 'html.parser')
             
-            web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+            web_data = soup.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
+
             result_from_soup : List[Dict] = get_data_from_soup(web_data)
             result_dict[sort_mode] += result_from_soup
             
@@ -78,7 +83,8 @@ def subcategory_buying_wholesale(base_url, top_k = 10):
             page = urllib.request.urlopen(url)
             soup = BeautifulSoup(page, 'html.parser')
             
-            web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+            web_data = soup.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
+
             result_from_soup : List[Dict] = get_data_from_soup(web_data)
             result_dict[sort_mode] += result_from_soup
             
@@ -108,7 +114,8 @@ def subcategory_finding_suppliers(base_url, top_k = 10):
             page = urllib.request.urlopen(url)
             soup = BeautifulSoup(page, 'html.parser')
             
-            web_data = soup.find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+            web_data = soup.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
+
             result_from_soup : List[Dict] = get_data_from_soup(web_data)
             result_dict[sort_mode] += result_from_soup
             
@@ -141,11 +148,14 @@ def crawl_category_finding_products(proxy_pool):
         }
     }
 
-    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3")
+    web_data = web_data.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
+
     result_from_soup : List[Dict] = get_data_from_soup(web_data)
     result_dict["finding-products"]["recommend"] += result_from_soup
     
-    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3").find_all('div', class_="tw-text-heading-6 -tw-mt-xs tw-transition-colors tw-text-fg-primary group-hover:tw-text-fg-highlight-primary")
+    web_data = soup.find('div',class_="tw-grid tw-grid-flow-dense tw-gap-gutter--mobile lg:tw-gap-gutter--desktop tw-invisible tw-transition-all tw-max-h-0 tw-duration-500 tw-ease tw-overflow-hidden tw-grid-cols-1 md:tw-grid-cols-2 xl:tw-grid-cols-3")
+    web_data = web_data.find_all('div', class_="tw-flex tw-w-full tw-flex-col tw-items-start tw-gap-xs")
     result_from_soup : List[Dict] = get_data_from_soup(web_data)
     result_dict["finding-products"]["recommend"] += result_from_soup
 
