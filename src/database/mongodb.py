@@ -7,6 +7,8 @@ class MongoDatabase:
         self.applications_collection = self.db['applications-collection']
         self.comments_collection = self.db['comments-collection']
         self.tracking_collection = self.db['trackings-collection']
+        self.transactions_collection = self.db['transactions-collection']
+        self.app_events_collection = self.db['app-events-collection']
     
     def get_comments_collection(self):
         return self.comments_collection
@@ -16,3 +18,9 @@ class MongoDatabase:
     
     def get_tracking_collection(self):
         return self.tracking_collection
+
+    def get_transactions_collection(self):
+        return self.transactions_collection
+    
+    def get_app_events_collection(self):
+        return self.app_events_collection
