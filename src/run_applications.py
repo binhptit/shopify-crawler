@@ -138,9 +138,9 @@ def main():
 
                         logging.info(f"Crawling {len(app_dict_list)} apps took {time.time() - crawling_app_time} seconds.")
                         save_string_json(f'data/{present_day}/applications.json', app_dict_list)
-                        tracking_collection.update_one({"date": present_day}, {
-                            "$set": {"apps": app_dict_list}
-                        })
+                        # tracking_collection.update_one({"date": present_day}, {
+                        #     "$set": {"apps": app_dict_list}
+                        # })
         time.sleep(1500)
 
 if __name__ == '__main__':
